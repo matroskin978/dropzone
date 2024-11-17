@@ -1,11 +1,3 @@
-<?php
-
-if (!empty($_FILES)) {
-    print_r($_FILES);
-    die;
-}
-
-?>
 <!doctype html>
 <html lang="en">
 <head>
