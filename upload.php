@@ -10,7 +10,7 @@ if (!isset($_FILES['gallery']) || $_FILES['gallery']['error']) {
 }
 
 $ext = get_file_extension($_FILES['gallery']['name']);
-if (!in_array($ext, ['jpeg', 'png'])) {
+if (!in_array($ext, ['jpg', 'png'])) {
     exit(json_encode(['status' => 'error', 'errors' => 'Invalid extension']));
 }
 
@@ -20,5 +20,3 @@ if (move_uploaded_file($_FILES['gallery']['tmp_name'], "uploads/$file_name")) {
 } else {
     exit(json_encode(['status' => 'error', 'errors' => 'Error uploading']));
 }
-
-
