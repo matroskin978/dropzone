@@ -14,11 +14,8 @@ let galleryDropzone = new Dropzone('div#upload', {
     dictInvalidFileType: 'К загрузке разрешены разрешения: .jpg, .png',
     success: function (file, response) {
         let res = JSON.parse(response);
-        if (res.status === 'error') {
-            this.options.error(file, res.errors);
-        } else {
-            file.previewElement.remove();
-            galleryImages.append(`
+        file.previewElement.remove();
+        galleryImages.append(`
                 <li class="gallery-images-thumb ui-state-default rounded-2" data-fileli="${res.file}" id="${res.file}">
                     <div class="gallery-images-thumb-del" data-file="${res.file}">🗑️</div>
                     <a href="#" data-fancybox="gallery">
@@ -27,10 +24,9 @@ let galleryDropzone = new Dropzone('div#upload', {
                     <input type="hidden" name="gallery[]" value="${res.file}" data-file="${res.file}">
                 </li>
             `);
-        }
     },
     removedfile: function (file) {
-        if (file.xhr) {
+        /*if (file.xhr) {
             let res = JSON.parse(file.xhr.response);
             let fileName = res.file;
             if (fileName) {
@@ -45,7 +41,7 @@ let galleryDropzone = new Dropzone('div#upload', {
                     },
                 });
             }
-        }
+        }*/
         file.previewElement.remove();
     },
 });
@@ -77,6 +73,37 @@ $(function () {
             error: function () {
                 alert('Error');
                 parentLi.removeClass('gallery-image-removing');
+            },
+        });
+    });
+
+    $('.ajax-form').on('submit', function (e) {
+        e.preventDefault();
+        let form = $(this);
+        let btn = form.find('button[type=submit]');
+        let btnText = btn.text();
+
+        $.ajax({
+            url: form.attr('action'),
+            type: form.attr('method'),
+            data: form.serialize(),
+            beforeSend: function () {
+                btn.prop('disabled', true).text('Sending...');
+            },
+            success: function (res) {
+                res = JSON.parse(res);
+                if (res.status === 'success') {
+                    alert('OK');
+                    if (res.redirect) {
+                        window.location = res.redirect;
+                    }
+                }
+            },
+            error: function () {
+                alert('Error');
+            },
+            complete: function () {
+                btn.prop('disabled', false).text(btnText);
             },
         });
     });
