@@ -342,3 +342,15 @@
     height: 130px;
     width: 130px;
 }
+
+.gallery img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin: 0 20px 20px 0;
+    border: 5px solid #ccc;
+}
+
+.gallery a {
+    text-decoration: none;
+}
